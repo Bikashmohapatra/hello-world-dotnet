@@ -1,24 +1,37 @@
 pipeline {
-     agent {
+  agent {
     kubernetes {
-      label 'kube-agent'
-      defaultContainer 'docker'
+      defaultContainer 'dotnet'
       yaml '''
 apiVersion: v1
 kind: Pod
 spec:
+  serviceAccountName: jenkins-agent
   containers:
+  - name: dotnet
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    command: ['cat']
+    tty: true
+
   - name: docker
     image: docker:24
     command: ['cat']
     tty: true
-  - name: kubectl
-    image: bitnami/kubectl
+    volumeMounts:
+    - name: dockersock
+      mountPath: /var/run/docker.sock
+
+  - name: aws
+    image: amazon/aws-cli
     command: ['cat']
     tty: true
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
 '''
     }
-     }
+  }
     environment {
         AWS_REGION = "ap-south-1"
         AWS_ACCOUNT_ID = "123456789012"
