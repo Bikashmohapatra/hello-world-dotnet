@@ -1,6 +1,22 @@
 pipeline {
-    agent any
-
+     agent {
+    kubernetes {
+      label 'kube-agent'
+      defaultContainer 'docker'
+      yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker
+    image: docker:24
+    command: ['cat']
+    tty: true
+  - name: kubectl
+    image: bitnami/kubectl
+    command: ['cat']
+    tty: true
+'''
     environment {
         AWS_REGION = "ap-south-1"
         AWS_ACCOUNT_ID = "123456789012"
