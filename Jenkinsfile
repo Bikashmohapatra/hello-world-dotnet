@@ -6,7 +6,6 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
-  serviceAccountName: jenkins-agent
   containers:
   - name: dotnet
     image: mcr.microsoft.com/dotnet/sdk:8.0
