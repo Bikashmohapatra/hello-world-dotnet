@@ -17,6 +17,8 @@ spec:
     command: ['cat']
     tty: true
 '''
+    }
+     }
     environment {
         AWS_REGION = "ap-south-1"
         AWS_ACCOUNT_ID = "123456789012"
